@@ -21,36 +21,49 @@ app/
   main.py
 ```
 
-## Setup
+## Local Run
 
-1. Create and activate virtual env.
-2. Install dependencies:
+1. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-3. Create `.env` from `.env.example` and set Vercel Postgres URI:
-   ```env
-   DATABASE_URL=postgresql://username:password@host:5432/database
-   ```
-   or
-   ```env
-   POSTGRES_URL=postgresql://username:password@host:5432/database
-   ```
-4. Run app:
+2. Create `.env` from `.env.example`.
+3. Run:
    ```bash
    uvicorn app.main:app --reload
    ```
 
-## Endpoints
+## API
 
-- `GET /` hello world
-- `POST /users/` create user
-- `GET /users/` get all users
-- `GET /users/{user_id}` get user by id
+- `GET /`
+- `GET /health`
+- `POST /users/`
+- `GET /users/`
+- `GET /users/{user_id}`
 
-## Deploy on Vercel (Bonus)
+## Deploy Options
 
-1. Push repository to GitHub.
-2. Import project in Vercel.
-3. Add env variable `DATABASE_URL` or `POSTGRES_URL` from Vercel Postgres.
+### Option 1: Render / Railway
+
+- Build command: `pip install -r requirements.txt`
+- Start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- Env var: set `DATABASE_URL` (or `POSTGRES_URL`)
+
+### Option 2: Docker (Any VPS/Cloud)
+
+```bash
+docker build -t fastapi-user-service .
+docker run -p 8000:8000 --env-file .env fastapi-user-service
+```
+
+### Option 3: Vercel
+
+1. Import repo in Vercel.
+2. Keep `vercel.json` as is.
+3. Set `DATABASE_URL` or `POSTGRES_URL` in Vercel Environment Variables.
 4. Deploy.
+
+## Notes
+
+- Both `postgres://` and `postgresql://` are accepted by config.
+- App auto-creates tables on startup.

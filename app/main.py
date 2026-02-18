@@ -16,3 +16,8 @@ def on_startup() -> None:
 @app.get("/")
 def root() -> dict[str, str]:
     return {"message": "Hello, World from FastAPI"}
+
+
+@app.get("/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}

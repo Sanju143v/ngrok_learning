@@ -16,6 +16,11 @@ class Settings(BaseSettings):
         uri = self.DATABASE_URL or self.POSTGRES_URL
         if not uri:
             raise ValueError("Set DATABASE_URL or POSTGRES_URL in environment variables")
+
+        # Many providers return postgres://, while SQLAlchemy expects postgresql://
+        if uri.startswith("postgres://"):
+            uri = uri.replace("postgres://", "postgresql://", 1)
+
         return uri
 
 
